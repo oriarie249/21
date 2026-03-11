@@ -49,18 +49,16 @@
             touch-action: manipulation;
         }
 
-        /* עדכון ה-Safe Area Insets עבור Dynamic Island */
+        /* מסך ראשי עם Safe Area */
         .app { 
             width: 100%; 
             max-width: 450px; 
             height: 100vh;
             height: 100dvh;
-            /* דוחף את כל התוכן מתחת ל-Dynamic Island */
             padding-top: calc(env(safe-area-inset-top) + 15px); 
             padding-bottom: calc(env(safe-area-inset-bottom) + 10px);
             padding-left: 20px;
             padding-right: 20px;
-            
             text-align: center; 
             display: flex;
             flex-direction: column;
@@ -144,12 +142,17 @@
         .btn-main { background: var(--primary); color: white; box-shadow: 0 5px 0 #9b1a1a; }
         .btn-sub { background: white; color: black; flex: 1; box-shadow: 0 5px 0 #ccc; }
 
+        /* מסך המשימה - עודכן ללא מסגרת אדומה ועם Safe Area */
         #reward-screen { 
             display: none; position: fixed; inset: 0; background: var(--bg); z-index: 10000; 
-            border: 8px solid var(--victory-red); flex-direction: column; align-items: center; 
+            /* הסרת המסגרת האדומה: */
+            border: none; 
+            flex-direction: column; align-items: center; 
             justify-content: center; opacity: 0; transition: opacity 0.6s; 
             padding: 20px;
-            padding-top: env(safe-area-inset-top);
+            /* הוספת Safe Area למסך המשימה: */
+            padding-top: calc(env(safe-area-inset-top) + 20px);
+            padding-bottom: calc(env(safe-area-inset-bottom) + 20px);
         }
 
         #reward-title { 
@@ -159,7 +162,13 @@
         #reward-task { font-size: 1.4rem; color: white; margin: 20px; font-weight: 900; text-align: center; line-height: 1.2; }
         #timer { font-size: 5rem; font-weight: 900; color: var(--victory-red); text-shadow: 0 0 20px rgba(255,0,0,0.4); }
 
-        #reveal-container { position: absolute; inset: 0; background: rgba(0,0,0,0.95); display: flex; align-items: center; justify-content: center; z-index: 10010; backdrop-filter: blur(25px); transition: 0.8s; }
+        /* מסך החשיפה - הוספת Safe Area */
+        #reveal-container { 
+            position: absolute; inset: 0; background: rgba(0,0,0,0.95); 
+            display: flex; align-items: center; justify-content: center; 
+            z-index: 10010; backdrop-filter: blur(25px); transition: 0.8s;
+            padding-top: env(safe-area-inset-top);
+        }
         #reveal-btn { background: var(--gold); padding: 25px 40px; border-radius: 20px; font-size: 1.4rem; box-shadow: 0 10px 0 #b8860b; color: black; width: 80%; }
 
         .balanced-intense-shake { animation: vibe 0.08s infinite alternate, flashPanic 0.15s infinite; }
