@@ -31,6 +31,8 @@
             --win-green: #00ff00;
         }
         
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
         body { 
             font-family: 'Montserrat', sans-serif; 
             background: var(--bg); 
@@ -39,107 +41,138 @@
             flex-direction: column;
             align-items: center; 
             justify-content: center; 
-            min-height: 100vh; 
+            min-height: 100vh;
+            min-height: 100dvh; /* גובה דינמי למובייל */
             margin: 0; 
             text-transform: uppercase;
             overflow: hidden;
             touch-action: manipulation;
         }
 
-        .app { width: 100%; max-width: 500px; padding: 20px; text-align: center; box-sizing: border-box; transition: opacity 0.8s ease; position: relative; }
+        /* התאמת הקונטיינר הראשי למסך */
+        .app { 
+            width: 100%; 
+            max-width: 450px; 
+            height: 95vh;
+            padding: 10px; 
+            text-align: center; 
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: opacity 0.8s ease; 
+            position: relative; 
+        }
         
         .round-counter { position: absolute; top: 10px; right: 20px; font-size: 0.7rem; color: #555; letter-spacing: 1px; }
 
-        h1 { font-size: 3rem; margin: 0; font-weight: 900; color: white; text-shadow: 0 0 20px rgba(255, 0, 0, 0.6); }
-        .subtitle { color: #555; font-size: 0.8rem; letter-spacing: 3px; margin-bottom: 20px; }
+        h1 { font-size: 2.5rem; margin: 0; font-weight: 900; color: white; text-shadow: 0 0 20px rgba(255, 0, 0, 0.6); }
+        .subtitle { color: #555; font-size: 0.7rem; letter-spacing: 3px; margin-bottom: 10px; }
 
-        .streak-board { display: flex; justify-content: space-between; margin-bottom: 30px; gap: 15px; }
-        .streak-player { background: var(--card-bg); padding: 20px 10px; border-radius: 20px; border: 2px solid #333; flex: 1; transition: 0.4s; font-size: 1.1rem; font-weight: 900; color: #666; }
-        .active-player { border-color: var(--gold); color: white; background: #252525; box-shadow: 0 0 15px rgba(255, 215, 0, 0.3); transform: scale(1.05); }
+        .streak-board { display: flex; justify-content: space-between; margin-bottom: 15px; gap: 10px; }
+        .streak-player { background: var(--card-bg); padding: 15px 5px; border-radius: 20px; border: 2px solid #333; flex: 1; transition: 0.4s; font-size: 1rem; font-weight: 900; color: #666; }
+        .active-player { border-color: var(--gold); color: white; background: #252525; box-shadow: 0 0 15px rgba(255, 215, 0, 0.3); transform: scale(1.02); }
         
         .streak-victory { 
             border-color: var(--win-green) !important; 
             color: var(--win-green) !important; 
             box-shadow: 0 0 30px rgba(0, 255, 0, 0.6) !important; 
-            transform: scale(1.1);
             animation: greenPulse 0.4s infinite alternate;
         }
         @keyframes greenPulse { from { opacity: 1; } to { opacity: 0.7; } }
 
         .winner-glow { animation: victoryPulse 1s ease-in-out infinite; border-color: var(--victory-red) !important; box-shadow: 0 0 40px rgba(255, 0, 0, 0.7) !important; color: white; }
+        @keyframes victoryPulse { 0%, 100% { transform: scale(1.05); } 50% { transform: scale(1); } }
 
-        @keyframes victoryPulse { 0%, 100% { transform: scale(1.08); } 50% { transform: scale(1.02); } }
-
-        .dots { display: flex; gap: 8px; justify-content: center; margin-top: 12px; }
-        .dot { width: 14px; height: 14px; border-radius: 50%; background: #222; border: 1px solid #444; }
+        .dots { display: flex; gap: 6px; justify-content: center; margin-top: 10px; }
+        .dot { width: 12px; height: 12px; border-radius: 50%; background: #222; border: 1px solid #444; }
         .dot.filled { background: var(--victory-red); box-shadow: 0 0 12px var(--victory-red); border: none; }
         .streak-victory .dot.filled { background: var(--win-green); box-shadow: 0 0 15px var(--win-green); }
 
-        .game-area { background: radial-gradient(circle, #2a0000 0%, #000 100%); padding: 25px 15px; border-radius: 35px; border: 2px solid #333; margin-bottom: 20px; position: relative; }
-        .score-tag { display: inline-block; color: var(--gold); font-size: 1.4rem; margin-left: 10px; }
+        .game-area { 
+            background: radial-gradient(circle, #2a0000 0%, #000 100%); 
+            padding: 15px 10px; 
+            border-radius: 30px; 
+            border: 2px solid #333; 
+            margin-bottom: 10px; 
+            position: relative;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .score-tag { display: inline-block; color: var(--gold); font-size: 1.3rem; margin-left: 10px; }
         
-        .cards-container { display: flex; justify-content: center; min-height: 150px; margin: 15px 0; perspective: 1000px; padding: 10px; }
-        .active-hand-glow { background: rgba(255, 215, 0, 0.05); box-shadow: inset 0 0 30px rgba(255, 215, 0, 0.1); border-radius: 20px; }
+        .cards-container { 
+            display: flex; 
+            justify-content: center; 
+            min-height: 130px; 
+            margin: 5px 0; 
+            perspective: 1000px; 
+            padding: 10px; 
+        }
 
         .playing-card { 
-            width: 95px; height: 135px; background-size: cover; border-radius: 8px; 
-            box-shadow: 0 8px 15px rgba(0,0,0,0.5); margin: 0 -25px; border: 1px solid #000; 
+            width: 85px; height: 120px; 
+            background-size: cover; border-radius: 8px; 
+            box-shadow: 0 8px 15px rgba(0,0,0,0.5); 
+            margin: 0 -20px; border: 1px solid #000; 
             background-color: #fff; opacity: 0;
             animation: cardFlyIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
 
         @keyframes cardFlyIn {
-            0% { transform: translateY(250px) rotate(45deg) scale(0.5); opacity: 0; }
+            0% { transform: translateY(150px) rotate(45deg) scale(0.5); opacity: 0; }
             100% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
         }
 
-        .status-msg { height: 50px; font-size: 1.4rem; margin: 15px 0; color: var(--gold); font-weight: 900; }
+        .status-msg { height: 40px; font-size: 1.2rem; margin: 10px 0; color: var(--gold); font-weight: 900; }
         
-        .controls { display: flex; flex-direction: column; gap: 10px; }
-        button { padding: 20px; border-radius: 15px; border: none; font-weight: 900; cursor: pointer; font-family: 'Montserrat', sans-serif; font-size: 1.3rem; transition: 0.2s; -webkit-tap-highlight-color: transparent; }
+        .controls { display: flex; flex-direction: column; gap: 10px; padding-bottom: 10px; }
+        button { padding: 18px; border-radius: 15px; border: none; font-weight: 900; cursor: pointer; font-family: 'Montserrat', sans-serif; font-size: 1.2rem; transition: 0.2s; -webkit-tap-highlight-color: transparent; }
         button:active { transform: scale(0.95); }
         .btn-main { background: var(--primary); color: white; box-shadow: 0 5px 0 #9b1a1a; }
         .btn-sub { background: white; color: black; flex: 1; box-shadow: 0 5px 0 #ccc; }
 
+        /* Reward Screen - רספונסיבי */
         #reward-screen { 
             display: none; position: fixed; inset: 0; background: var(--bg); z-index: 10000; 
-            border: 10px solid var(--victory-red); flex-direction: column; align-items: center; 
-            justify-content: center; opacity: 0; transition: opacity 0.6s; 
+            border: 8px solid var(--victory-red); flex-direction: column; align-items: center; 
+            justify-content: center; opacity: 0; transition: opacity 0.6s; padding: 20px;
         }
 
         #reward-title { 
-            font-size: 4rem; color: var(--gold); margin-bottom: 10px;
-            text-shadow: 0 0 25px var(--gold); animation: textGlow 1s infinite alternate; 
+            font-size: 3rem; color: var(--gold); margin-bottom: 10px;
+            text-shadow: 0 0 25px var(--gold); text-align: center;
         }
-        @keyframes textGlow { from { transform: scale(1); text-shadow: 0 0 10px var(--gold); } to { transform: scale(1.1); text-shadow: 0 0 30px var(--gold); } }
-
-        #reward-task { font-size: 1.6rem; color: white; margin: 20px; font-weight: 900; text-align: center; line-height: 1.2; }
-        #timer { font-size: 6rem; font-weight: 900; color: var(--victory-red); text-shadow: 0 0 20px rgba(255,0,0,0.4); }
+        #reward-task { font-size: 1.4rem; color: white; margin: 20px; font-weight: 900; text-align: center; line-height: 1.2; }
+        #timer { font-size: 5rem; font-weight: 900; color: var(--victory-red); text-shadow: 0 0 20px rgba(255,0,0,0.4); }
 
         #reveal-container { position: absolute; inset: 0; background: rgba(0,0,0,0.95); display: flex; align-items: center; justify-content: center; z-index: 10010; backdrop-filter: blur(25px); transition: 0.8s; }
-        
-        #reveal-btn { background: var(--gold); padding: 25px 50px; border-radius: 20px; font-size: 1.6rem; box-shadow: 0 10px 0 #b8860b; color: black; }
+        #reveal-btn { background: var(--gold); padding: 25px 40px; border-radius: 20px; font-size: 1.4rem; box-shadow: 0 10px 0 #b8860b; color: black; width: 80%; }
 
-        .balanced-intense-shake { animation: vibe 0.08s infinite alternate, flashPanic 0.15s infinite; box-shadow: 0 0 60px var(--victory-red) !important; }
+        .balanced-intense-shake { animation: vibe 0.08s infinite alternate, flashPanic 0.15s infinite; }
         @keyframes vibe { from { transform: translate(-3px, -2px) rotate(-1deg); } to { transform: translate(3px, 2px) rotate(1deg); } }
         @keyframes flashPanic { 0%, 100% { background: var(--gold); } 50% { background: var(--victory-red); color: white; } }
         
         .btn-fall { animation: fallSmooth 0.9s forwards cubic-bezier(0.55, 0.055, 0.675, 0.19); }
         @keyframes fallSmooth { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(1000px) rotate(45deg); opacity: 0; } }
 
-        #reward-content { display: none; flex-direction: column; align-items: center; opacity: 0; transform: scale(0.8); transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        #reward-content { display: none; flex-direction: column; align-items: center; opacity: 0; transform: scale(0.8); transition: 0.5s; }
         .content-show { display: flex !important; opacity: 1 !important; transform: scale(1) !important; }
 
-        .btn-timer-start { background: var(--victory-red); color: white; padding: 15px 40px; border-radius: 50px; margin-top: 15px; box-shadow: 0 6px 0 #9b1a1a; font-size: 1.1rem; }
-        .btn-done { background: white; color: black; padding: 15px 50px; border-radius: 50px; margin-top: 15px; box-shadow: 0 6px 0 #ccc; font-size: 1.1rem; }
+        .btn-timer-start, .btn-done { padding: 15px 40px; border-radius: 50px; margin-top: 15px; font-size: 1.1rem; width: 80%; }
+        .btn-timer-start { background: var(--victory-red); color: white; box-shadow: 0 6px 0 #9b1a1a; }
+        .btn-done { background: white; color: black; box-shadow: 0 6px 0 #ccc; }
     </style>
 </head>
 <body>
 
 <div class="app" id="main-app">
     <div class="round-counter">ROUNDS: <span id="round-val">0</span></div>
-    <h1>HOT 21</h1>
-    <div class="subtitle">STREAK CHALLENGE</div>
+    <div>
+        <h1>HOT 21</h1>
+        <div class="subtitle">STREAK CHALLENGE</div>
+    </div>
 
     <div class="streak-board">
         <div id="streak-p1" class="streak-player"><span>PLAYER 1</span><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
@@ -149,7 +182,7 @@
     <div class="game-area">
         <div style="font-size: 0.7rem; color: #666;">PLAYER 2 <span class="score-tag" id="p2-score">0</span></div>
         <div id="p2-cards" class="cards-container"></div>
-        <div style="border-top: 1px solid #222; margin: 15px 40px;"></div>
+        <div style="border-top: 1px solid #222; margin: 10px 40px;"></div>
         <div style="font-size: 0.7rem; color: #666;">PLAYER 1 <span class="score-tag" id="p1-score">0</span></div>
         <div id="p1-cards" class="cards-container"></div>
         <div id="status" class="status-msg">READY?</div>
@@ -181,9 +214,7 @@
     const cardBaseURL = "https://deckofcardsapi.com/static/img/";
     const suits = ['H', 'D', 'C', 'S'], vals = ['2','3','4','5','6','7','8','9','0','J','Q','K','A'];
     let deck = [], p1Hand = [], p2Hand = [], streaks = { p1: 0, p2: 0 }, currentPlayer = 1, gameOver = false, roundWinner = null;
-    let roundCount = 0;
-    let currentTimeLeft = 0;
-    let rewardInterval;
+    let roundCount = 0, currentTimeLeft = 0, rewardInterval;
 
     const tasks = [
         { text: "YOUR MISSION IS STANDING DOGGY STYLE (NOT ON BED)!", time: 300 },
@@ -249,9 +280,6 @@
         document.getElementById('p2-score').textContent = getVal(p2Hand);
         document.getElementById('round-val').textContent = roundCount;
 
-        document.getElementById('p1-cards').classList.toggle('active-hand-glow', currentPlayer === 1 && !gameOver);
-        document.getElementById('p2-cards').classList.toggle('active-hand-glow', currentPlayer === 2 && !gameOver);
-
         ['p1', 'p2'].forEach(p => {
             const el = document.getElementById(`streak-${p}`);
             const dots = el.querySelectorAll('.dot');
@@ -295,27 +323,23 @@
             statusEl.textContent = msg || `PLAYER ${winner === 'p1' ? '1' : '2'} WON!`;
             streaks[winner === 'p1' ? 'p2' : 'p1'] = 0; streaks[winner]++;
         }
-        
         updateUI();
-
         if (winner !== 'draw' && streaks[winner] === 3) {
             document.getElementById(`streak-${winner}`).classList.add('streak-victory');
             document.getElementById('deal-btn').disabled = true;
-            setTimeout(() => showReward(winner), 1200);
+            setTimeout(showReward, 1200);
         } else {
             document.getElementById('deal-btn').style.display = 'block';
             document.getElementById('game-btns').style.display = 'none';
         }
     }
 
-    function showReward(winner) {
+    function showReward() {
         const screen = document.getElementById('reward-screen');
         const task = tasks[Math.floor(Math.random() * tasks.length)];
         currentTimeLeft = task.time;
         document.getElementById('reward-task').textContent = task.text;
         document.getElementById('timer').textContent = `${Math.floor(task.time/60).toString().padStart(2,'0')}:${(task.time%60).toString().padStart(2,'0')}`;
-        document.getElementById('reveal-container').style.display = 'flex';
-        document.getElementById('reveal-container').style.opacity = '1';
         document.getElementById('main-app').style.opacity = '0';
         setTimeout(() => {
             document.getElementById('main-app').style.display = 'none';
@@ -355,32 +379,11 @@
     }
 
     function closeReward() {
-        // איפוס לוגי מלא במקום רענון דף שגורם לתקיעות
         clearInterval(rewardInterval);
         streaks = { p1: 0, p2: 0 };
         roundCount = 0;
-        p1Hand = [];
-        p2Hand = [];
+        p1Hand = []; p2Hand = [];
         gameOver = false;
-        roundWinner = null;
-        currentPlayer = 1;
-
-        // איפוס הממשק של המשחק הראשי
-        document.getElementById('p1-cards').innerHTML = '';
-        document.getElementById('p2-cards').innerHTML = '';
-        document.getElementById('p1-score').textContent = '0';
-        document.getElementById('p2-score').textContent = '0';
-        document.getElementById('round-val').textContent = '0';
-        document.getElementById('status').textContent = 'READY?';
-        document.getElementById('deal-btn').style.display = 'block';
-        document.getElementById('deal-btn').disabled = false;
-        document.getElementById('game-btns').style.display = 'none';
-        
-        // הסרת מחלקות ניצחון
-        document.getElementById('streak-p1').classList.remove('streak-victory', 'winner-glow');
-        document.getElementById('streak-p2').classList.remove('streak-victory', 'winner-glow');
-        
-        // איפוס מסך הפרס לשימוש הבא
         document.getElementById('reward-screen').style.opacity = '0';
         setTimeout(() => {
             document.getElementById('reward-screen').style.display = 'none';
@@ -390,13 +393,16 @@
             document.getElementById('reveal-btn').classList.remove('btn-fall');
             document.getElementById('timer-start-btn').style.display = 'block';
             document.getElementById('done-btn').style.display = 'none';
-            
-            // הצגת האפליקציה מחדש
-            document.getElementById('main-app').style.display = 'block';
-            setTimeout(() => {
-                document.getElementById('main-app').style.opacity = '1';
-                updateUI();
-            }, 50);
+            document.getElementById('main-app').style.display = 'flex';
+            document.getElementById('deal-btn').style.display = 'block';
+            document.getElementById('deal-btn').disabled = false;
+            document.getElementById('game-btns').style.display = 'none';
+            document.getElementById('status').textContent = 'READY?';
+            document.getElementById('streak-p1').classList.remove('streak-victory', 'winner-glow');
+            document.getElementById('streak-p2').classList.remove('streak-victory', 'winner-glow');
+            document.getElementById('p1-cards').innerHTML = '';
+            document.getElementById('p2-cards').innerHTML = '';
+            setTimeout(() => { document.getElementById('main-app').style.opacity = '1'; updateUI(); }, 50);
         }, 600);
     }
 </script>
