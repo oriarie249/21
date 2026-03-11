@@ -47,6 +47,18 @@
             text-transform: uppercase;
             overflow: hidden;
             touch-action: manipulation;
+            
+            /* שינוי: ביטול בחירת טקסט בכל המשחק */
+            -webkit-user-select: none; /* Safari/iOS */
+            -moz-user-select: none;    /* Firefox */
+            -ms-user-select: none;     /* IE/Edge */
+            user-select: none;         /* Standard */
+        }
+
+        /* מאפשר בחירת טקסט רק בתוך תיבות הקלט (כדי שיוכלו להקליד שמות) */
+        input {
+            -webkit-user-select: text;
+            user-select: text;
         }
 
         /* Home Screen Styles */
@@ -56,10 +68,12 @@
             padding: 30px; text-align: center; transition: 0.5s;
         }
         .input-group { width: 100%; max-width: 300px; margin-bottom: 20px; }
+        
         .name-input {
             width: 100%; padding: 15px; border-radius: 12px; border: 2px solid #333;
             background: #1a1a1a; color: white; font-family: 'Montserrat'; font-weight: 700;
             margin-top: 8px; outline: none; text-align: center;
+            font-size: 1.1rem;
         }
         .name-input::placeholder { color: #888; font-weight: 700; opacity: 1; }
         .name-input:focus { border-color: var(--primary); }
@@ -170,9 +184,20 @@
         .status-msg { height: 40px; font-size: 1.2rem; margin: 10px 0; color: var(--gold); font-weight: 900; }
         
         .controls { display: flex; flex-direction: column; gap: 10px; padding-bottom: 10px; }
-        button { padding: 18px; border-radius: 15px; border: none; font-weight: 900; cursor: pointer; font-family: 'Montserrat', sans-serif; font-size: 1.2rem; transition: 0.2s; }
+        
+        button { 
+            padding: 18px; border-radius: 15px; border: none; font-weight: 900; cursor: pointer; 
+            font-family: 'Montserrat', sans-serif; font-size: 1.2rem; transition: transform 0.1s, background-color 0.1s, box-shadow 0.1s; 
+        }
+        button:active {
+            transform: scale(0.97); 
+        }
+
         .btn-main { background: var(--primary); color: white; box-shadow: 0 5px 0 #9b1a1a; }
+        .btn-main:active { background-color: #d12e2e; box-shadow: 0 2px 0 #6d1212; }
+
         .btn-sub { background: white; color: black; flex: 1; box-shadow: 0 5px 0 #ccc; }
+        .btn-sub:active { background-color: #e6e6e6; box-shadow: 0 2px 0 #999; }
 
         #reward-screen { 
             display: none; position: fixed; inset: 0; background: var(--bg); z-index: 10000; 
@@ -198,6 +223,7 @@
             padding-top: env(safe-area-inset-top);
         }
         #reveal-btn { background: var(--gold); padding: 25px 40px; border-radius: 20px; font-size: 1.4rem; box-shadow: 0 10px 0 #b8860b; color: black; width: 80%; }
+        #reveal-btn:active { background-color: #d4a017; box-shadow: 0 4px 0 #7a5a07; }
 
         .balanced-intense-shake { animation: vibe 0.08s infinite alternate, flashPanic 0.15s infinite; }
         @keyframes vibe { from { transform: translate(-3px, -2px) rotate(-1deg); } to { transform: translate(3px, 2px) rotate(1deg); } }
@@ -223,7 +249,10 @@
 
         .btn-timer-start, .btn-done { padding: 15px 40px; border-radius: 50px; margin-top: 15px; font-size: 1.1rem; width: 80%; }
         .btn-timer-start { background: var(--victory-red); color: white; box-shadow: 0 6px 0 #9b1a1a; }
+        .btn-timer-start:active { background-color: #cc0000; box-shadow: 0 2px 0 #660000; }
+        
         .btn-done { background: white; color: black; box-shadow: 0 6px 0 #ccc; }
+        .btn-done:active { background-color: #e6e6e6; box-shadow: 0 2px 0 #999; }
     </style>
 </head>
 <body>
