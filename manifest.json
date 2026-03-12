@@ -1,6 +1,12 @@
 {
-  "short_name": "Hot 21",
   "name": "Hot 21 - Streak Challenge",
+  "short_name": "Hot 21",
+  "description": "Hot 21 Blackjack Challenge with Tasks",
+  "start_url": "index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0b0b0b",
+  "theme_color": "#ff3e3e",
   "icons": [
     {
       "src": "icon.png",
@@ -12,11 +18,5 @@
       "sizes": "512x512",
       "type": "image/png"
     }
-  ],
-  "start_url": "index.html",
-  "background_color": "#0b0b0b",
-  "display": "standalone",
-  "scope": "./",
-  "theme_color": "#ff3e3e",
-  "description": "Hot 21 Blackjack Challenge with Tasks"
+  ]
 }
