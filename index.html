@@ -13,7 +13,6 @@
     <link rel="apple-touch-icon" href="icon.png">
 
     <script>
-      // רישום ה-Service Worker כדי שיעבוד אופליין
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
           navigator.serviceWorker.register('sw.js')
@@ -58,7 +57,6 @@
             cursor: pointer;
         }
 
-        /* Age Verification Styles */
         #age-gate {
             position: fixed; inset: 0; background: var(--bg); z-index: 50000;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -362,7 +360,6 @@
 </div>
 
 <script>
-    // --- נשאר ללא שינוי כפי שביקשת ---
     window.addEventListener('load', () => {
         if (localStorage.getItem('hot21_age_verified') === 'true') {
             document.getElementById('age-gate').style.display = 'none';
@@ -370,6 +367,7 @@
     });
 
     function verifyAge() {
+        deviceLockCheck(); // שורה חדשה: נועלת את המכשיר ברגע הכניסה הראשונה
         localStorage.setItem('hot21_age_verified', 'true');
         document.getElementById('age-gate').style.opacity = '0';
         setTimeout(() => {
@@ -377,7 +375,6 @@
         }, 500);
     }
 
-    // פונקציית היציאה החדשה
     function leaveApp() {
         window.close();
         document.body.innerHTML = '';
@@ -386,7 +383,6 @@
             location.href = 'about:blank';
         }, 100);
     }
-    // ---------------------------------
 
     const cardBaseURL = "https://deckofcardsapi.com/static/img/";
     const suits = ['H', 'D', 'C', 'S'], vals = ['2','3','4','5','6','7','8','9','0','J','Q','K','A'];
@@ -628,6 +624,17 @@
             document.getElementById('p2-cards').innerHTML = '';
             setTimeout(() => { document.getElementById('main-app').style.opacity = '1'; updateUI(); }, 50);
         }, 600);
+    }
+
+    function deviceLockCheck() {
+        // בודק אם המכשיר כבר "רשום"
+        if (localStorage.getItem('device_registered') === 'true') {
+            return true;
+        }
+        
+        // אם זו פעם ראשונה, נרשום את המכשיר
+        localStorage.setItem('device_registered', 'true');
+        return true;
     }
 </script>
 </body>
