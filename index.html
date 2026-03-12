@@ -279,7 +279,7 @@
             will play with <strong>full mutual consent</strong>.
         </p>
         <button class="btn-main" style="width: 100%; margin-bottom: 15px;" onclick="verifyAge()">I AM 18+ (ENTER)</button>
-        <button class="btn-sub" style="width: 100%; font-size: 0.9rem;" onclick="location.href='https://google.com'">LEAVE SITE</button>
+        <button class="btn-sub" style="width: 100%; font-size: 0.9rem;" onclick="leaveApp()">LEAVE APP</button>
     </div>
 </div>
 
@@ -362,7 +362,7 @@
 </div>
 
 <script>
-    // --- LEGAL & PERSISTENCE LOGIC ---
+    // --- נשאר ללא שינוי כפי שביקשת ---
     window.addEventListener('load', () => {
         if (localStorage.getItem('hot21_age_verified') === 'true') {
             document.getElementById('age-gate').style.display = 'none';
@@ -375,6 +375,16 @@
         setTimeout(() => {
             document.getElementById('age-gate').style.display = 'none';
         }, 500);
+    }
+
+    // פונקציית היציאה החדשה
+    function leaveApp() {
+        window.close();
+        document.body.innerHTML = '';
+        document.body.style.backgroundColor = '#000000';
+        setTimeout(() => {
+            location.href = 'about:blank';
+        }, 100);
     }
     // ---------------------------------
 
