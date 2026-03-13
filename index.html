@@ -360,6 +360,27 @@
 </div>
 
 <script>
+    // --- מנגנון חסימה מיידי ---
+    (function blockUnauthorized() {
+        if (localStorage.getItem('device_registered') === 'true') {
+            return;
+        }
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('authorized') === 'true') {
+            localStorage.setItem('device_registered', 'true');
+            window.history.replaceState({}, document.title, window.location.pathname);
+        } else {
+            document.documentElement.innerHTML = `
+                <body style="background:#000; color:red; display:flex; align-items:center; justify-content:center; height:100vh; font-family:sans-serif; text-align:center; padding:20px;">
+                    <div>
+                        <h1>ACCESS DENIED</h1>
+                        <p style="color:white;">גישה נדחתה. יש להיכנס דרך הקישור הרשמי שקיבלת.</p>
+                    </div>
+                </body>`;
+            throw new Error("Unauthorized access");
+        }
+    })();
+
     window.addEventListener('load', () => {
         if (localStorage.getItem('hot21_age_verified') === 'true') {
             document.getElementById('age-gate').style.display = 'none';
@@ -367,7 +388,6 @@
     });
 
     function verifyAge() {
-        deviceLockCheck(); // שורה חדשה: נועלת את המכשיר ברגע הכניסה הראשונה
         localStorage.setItem('hot21_age_verified', 'true');
         document.getElementById('age-gate').style.opacity = '0';
         setTimeout(() => {
@@ -625,29 +645,6 @@
             setTimeout(() => { document.getElementById('main-app').style.opacity = '1'; updateUI(); }, 50);
         }, 600);
     }
-
-    function deviceLockCheck() {
-    // 1. אם המכשיר כבר רשום בזיכרון המקומי - תן לו להיכנס
-    if (localStorage.getItem('device_registered') === 'true') {
-        return true;
-    }
-    
-    // 2. אם זה מכשיר חדש, נבדוק אם הוא הגיע עם "מפתח כניסה" מדף המכירה
-    const urlParams = new URLSearchParams(window.location.search);
-    const hasKey = urlParams.get('authorized') === 'true';
-
-    if (hasKey) {
-        // המשתמש הגיע מדף המכירה! נרשום את המכשיר שלו לתמיד
-        localStorage.setItem('device_registered', 'true');
-        return true;
-    } else {
-        // 3. חסימה: המשתמש ניסה להיכנס ישירות ללינק בלי לשלם
-        alert("גישה נדחתה. יש להיכנס דרך הקישור הרשמי שקיבלת.");
-        document.body.innerHTML = "<h1 style='color:white; text-align:center; margin-top:50px;'>Access Denied</h1>";
-        return false;
-    }
-}
 </script>
 </body>
 </html>
-
